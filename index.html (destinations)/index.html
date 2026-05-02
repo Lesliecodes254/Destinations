@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Destinations – ExploreWorld</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green-deep:   #0a3d1f;
+      --green-mid:    #1a6b3a;
+      --green-bright: #28a745;
+      --green-light:  #d4edda;
+      --green-pale:   #f0faf3;
+      --white:        #ffffff;
+      --accent:       #f4c430;
+      --text-dark:    #0d2416;
+      --text-body:    #2d4a37;
+      --shadow:       0 8px 32px rgba(10,61,31,0.14);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--green-pale);
+      color: var(--text-body);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAVBAR ──────────────────────────────────────────── */
+    nav {
+      background: var(--green-deep);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 68px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--accent);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    .nav-logo span { font-size: 1.8rem; }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.45rem 1rem;
+      border-radius: 30px;
+      transition: all 0.25s;
+      letter-spacing: 0.3px;
+    }
+    .nav-links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .nav-links a.active {
+      background: var(--green-bright);
+      color: #fff;
+    }
+
+    /* ─── HERO BANNER ─────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 60%, #1f8c4a 100%);
+      color: #fff;
+      padding: 5rem 2.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Ccircle cx='40' cy='40' r='1.5' fill='rgba(255,255,255,0.07)'/%3E%3C/g%3E%3C/svg%3E") repeat;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--green-deep);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.35rem 1.2rem;
+      border-radius: 30px;
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .hero p {
+      font-size: 1.1rem;
+      opacity: 0.85;
+      max-width: 540px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    /* ─── CATEGORY FILTER TABS ────────────────────────────── */
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding: 2rem 2rem 0;
+    }
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.4rem;
+      border-radius: 30px;
+      border: 2px solid var(--green-mid);
+      background: transparent;
+      color: var(--green-mid);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.22s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--green-mid);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(26,107,58,0.3);
+    }
+
+    /* ─── SECTION WRAPPER ─────────────────────────────────── */
+    .section {
+      padding: 3rem 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .section-icon {
+      width: 52px; height: 52px;
+      background: var(--green-mid);
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 14px rgba(26,107,58,0.3);
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      color: var(--green-deep);
+    }
+    .section-header p {
+      font-size: 0.9rem;
+      color: #5a7a64;
+      margin-top: 0.15rem;
+    }
+
+    /* ─── DESTINATION CARDS – Two-column grid ─────────────── */
+    .destinations-grid {
+      display: grid;
+      gap: 1.6rem;
+    }
+
+    .dest-card {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: fadeUp 0.5s ease both;
+    }
+    .dest-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 50px rgba(10,61,31,0.18);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .dest-card:nth-child(1) { animation-delay: 0.05s }
+    .dest-card:nth-child(2) { animation-delay: 0.12s }
+    .dest-card:nth-child(3) { animation-delay: 0.19s }
+    .dest-card:nth-child(4) { animation-delay: 0.26s }
+
+    /* Image (left column) */
+    .dest-img {
+      position: relative;
+      overflow: hidden;
+    }
+    .dest-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s ease;
+    }
+    .dest-card:hover .dest-img img { transform: scale(1.07); }
+
+    .dest-img .category-tag {
+      position: absolute;
+      top: 14px; left: 14px;
+      background: var(--green-deep);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 0.3rem 0.85rem;
+      border-radius: 20px;
+    }
+
+    /* Text (right column) */
+    .dest-body {
+      padding: 1.8rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .dest-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      color: var(--green-deep);
+      margin-bottom: 0.5rem;
+    }
+    .dest-location {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.82rem;
+      color: var(--green-bright);
+      font-weight: 600;
+      margin-bottom: 0.9rem;
+    }
+    .dest-desc {
+      font-size: 0.93rem;
+      line-height: 1.72;
+      color: #3a5545;
+      margin-bottom: 1.2rem;
+    }
+
+    .activities-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--green-mid);
+      margin-bottom: 0.5rem;
+    }
+    .activities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .activity-tag {
+      background: var(--green-light);
+      color: var(--green-deep);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      border: 1px solid #b8dfc5;
+    }
+
+    .dest-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.4rem;
+      padding-top: 1rem;
+      border-top: 1px dashed #c8e6d0;
+    }
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #e6a817;
+    }
+    .learn-btn {
+      background: var(--green-mid);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1.4rem;
+      border-radius: 25px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.22s;
+    }
+    .learn-btn:hover {
+      background: var(--green-deep);
+      transform: scale(1.04);
+    }
+
+    /* ─── DIVIDER ─────────────────────────────────────────── */
+    .wave-divider {
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      margin-top: 1rem;
+    }
+
+    /* ─── STATS BAND ──────────────────────────────────────── */
+    .stats-band {
+      background: var(--green-deep);
+      color: #fff;
+      padding: 2.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+    .stat-item strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-item span {
+      font-size: 0.85rem;
+      opacity: 0.75;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: var(--green-deep);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.83rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    footer strong { color: var(--accent); }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .dest-card { grid-template-columns: 1fr; }
+      .dest-img { height: 220px; }
+      .stats-band { gap: 2rem; }
+      nav { padding: 0 1rem; }
+      .nav-links { gap: 0; }
+      .nav-links a { padding: 0.45rem 0.6rem; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ░░░ NAVBAR ░░░ -->
+<nav>
+  <a href="#" class="nav-logo"><span>🌿</span> ExploreWorld</a>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#" class="active">Destinations</a></li>
+    <li><a href="#">Activities</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ░░░ HERO ░░░ -->
+<section class="hero">
+  <div class="hero-badge">✦ Explore the World</div>
+  <h1>Discover <em>Breathtaking</em><br>Destinations</h1>
+  <p>From shimmering beaches to ancient cultural sites — find your next adventure and experience something unforgettable.</p>
+</section>
+
+<!-- ░░░ FILTER TABS ░░░ -->
+<div class="filter-bar">
+  <button class="filter-btn active">🌊 All Places</button>
+  <button class="filter-btn">🏖️ Beaches</button>
+  <button class="filter-btn">🌲 National Parks</button>
+  <button class="filter-btn">🏙️ Cities</button>
+  <button class="filter-btn">🏛️ Cultural Sites</button>
+</div>
+
+<!-- ░░░ BEACHES ░░░ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🏖️</div>
+    <div>
+      <h2>Beaches</h2>
+      <p>Crystal waters, golden sands, and endless sunsets</p>
+    </div>
+  </div>
+  <div class="destinations-grid">
+
+    <!-- Card 1 -->
+    <div class="dest-card">
+      <div class="dest-img">
+        <img src="C:\Users\User\OneDrive\Desktop\index.html (destinations)\images\Diani beach.jpg"/>
+        <span class="category-tag">Beach</span>
+      </div>
+      <div class="dest-body">
+        <div>
+          <h3>Diani Beach</h3>
+          <div class="dest-location">📍 Kwale County, Kenya</div>
+          <p class="dest-desc">Diani is a world-class tropical beach stretching 17 km along the Indian Ocean coast. Its powdery white sand and warm turquoise waters make it one of Africa's most celebrated beach destinations, lined with swaying palms and vibrant coral reefs.</p>
+          <div class="activities-label">Activities</div>
+          <div class="activities">
+            <span class="activity-tag">🤿 Snorkeling</span>
+            <span class="activity-tag">🏄 Surfing</span>
+            <span class="activity-tag">🐠 Diving</span>
+            <span class="activity-tag">🛶 Boat Tours</span>
+            <span class="activity-tag">🦀 Beach Walks</span>
+          </div>
+        </div>
+        <div class="dest-footer">
+          <div class="rating">⭐⭐⭐⭐⭐ <span style="color:#888;font-weight:400">4.9 / 5</span></div>
+          <button class="learn-btn">Explore →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="dest-card">
+      <div class="dest-img">
+        <img src="C:\Users\User\OneDrive\Desktop\index.html (destinations)\images\Watamu.jpg"/>
+        <span class="category-tag">Beach</span>
+      </div>
+      <div class="dest-body">
+        <div>
+          <h3>Watamu Beach</h3>
+          <div class="dest-location">📍 Kilifi County, Kenya</div>
+          <p class="dest-desc">Nestled within a UNESCO Biosphere Reserve, Watamu offers pristine white-sand beaches and one of the most biodiverse marine environments in East Africa. The Watamu Marine National Park teems with green turtles, dolphins, and 600+ fish species.</p>
+          <div class="activities-label">Activities</div>
+          <div class="activities">
+            <span class="activity-tag">🐢 Turtle Watching</span>
+            <span class="activity-tag">🚣 Kayaking</span>
+            <span class="activity-tag">🐬 Dolphin Trips</span>
+            <span class="activity-tag">🎣 Deep-Sea Fishing</span>
+          </div>
+        </div>
+        <div class="dest-footer">
+          <div class="rating">⭐⭐⭐⭐⭐ <span style="color:#888;font-weight:400">4.8 / 5</span></div>
+          <button class="learn-btn">Explore →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ░░░ NATIONAL PARKS ░░░ -->
+<div class="section" style="background:var(--green-light); border-radius:24px; margin: 0 1.5rem 2rem;">
+  <div class="section-header">
+    <div class="section-icon">🌲</div>
+    <div>
+      <h2>National Parks</h2>
+      <p>Wild landscapes, majestic wildlife, and raw natural wonder</p>
+    </div>
+  </div>
+  <div class="destinations-grid">
+
+    <div class="dest-card">
+      <div class="dest-img">
+        <img src="C:\Users\User\OneDrive\Desktop\index.html (destinations)\images\Maasai Mara.jpg" alt="Maasai Mara"/>
+        <span class="category-tag">National Park</span>
+      </div>
+      <div class="dest-body">
+        <div>
+          <h3>Maasai Mara</h3>
+          <div class="dest-location">📍 Narok County, Kenya</div>
+          <p class="dest-desc">Home to the Great Migration — one of the world's greatest wildlife spectacles — the Maasai Mara teems with lions, elephants, and wildebeest. Lush rolling savannah and the Mara River define this iconic landscape that inspired countless documentaries.</p>
+          <div class="activities-label">Activities</div>
+          <div class="activities">
+            <span class="activity-tag">🦁 Game Drives</span>
+            <span class="activity-tag">🎈 Hot Air Balloon</span>
+            <span class="activity-tag">📸 Photography</span>
+            <span class="activity-tag">🏕️ Bush Camping</span>
+            <span class="activity-tag">🌅 Sunset Safaris</span>
+          </div>
+        </div>
+        <div class="dest-footer">
+          <div class="rating">⭐⭐⭐⭐⭐ <span style="color:#888;font-weight:400">5.0 / 5</span></div>
+          <button class="learn-btn">Explore →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <div class="dest-img">
+        <img src="C:\Users\User\OneDrive\Desktop\index.html (destinations)\images\Amboseli.jpg" alt="Amboseli"/>
+        <span class="category-tag">National Park</span>
+      </div>
+      <div class="dest-body">
+        <div>
+          <h3>Amboseli National Park</h3>
+          <div class="dest-location">📍 Kajiado County, Kenya</div>
+          <p class="dest-desc">Set against the magnificent backdrop of Mount Kilimanjaro, Amboseli is famous for its large free-ranging elephant herds. The park's open plains, swamps, and woodlands create a mosaic of habitats that support extraordinary wildlife diversity.</p>
+          <div class="activities-label">Activities</div>
+          <div class="activities">
+            <span class="activity-tag">🐘 Elephant Viewing</span>
+            <span class="activity-tag">🦒 Game Drives</span>
+            <span class="activity-tag">🏔️ Kilimanjaro Views</span>
+            <span class="activity-tag">🐦 Bird Watching</span>
+          </div>
+        </div>
+        <div class="dest-footer">
+          <div class="rating">⭐⭐⭐⭐⭐ <span style="color:#888;font-weight:400">4.9 / 5</span></div>
+          <button class="learn-btn">Explore →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ░░░ CITIES ░░░ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🏙️</div>
+    <div>
+      <h2>Cities</h2>
+      <p>Vibrant urban hubs buzzing with culture, food, and energy</p>
+    </div>
+  </div>
+  <div class="destinations-grid">
+
+    <div class="dest-card">
+      <div class="dest-img">
+        <img src="C:\Users\User\OneDrive\Desktop\index.html (destinations)\images\Nairobi.jpg" alt="Nairobi"/>
+        <span class="category-tag">City</span>
+      </div>
+      <div class="dest-body">
+        <div>
+          <h3>Nairobi</h3>
+          <div class="dest-location">📍 Nairobi County, Kenya</div>
+          <p class="dest-desc">Africa's "Green City in the Sun" is a thrilling metropolis where skyscrapers meet wildlife. The only city in the world with a national park on its doorstep, Nairobi offers world-class dining, tech innovation, vibrant nightlife, and an unmatched safari gateway experience.</p>
+          <div class="activities-label">Activities</div>
+          <div class="activities">
+            <span class="activity-tag">🦒 Giraffe Centre</span>
+            <span class="activity-tag">🍽️ Food Tours</span>
+            <span class="activity-tag">🛍️ Maasai Market</span>
+            <span class="activity-tag">🏞️ Nairobi NP</span>
+            <span class="activity-tag">🎭 Nightlife</span>
+          </div>
+        </div>
+        <div class="dest-footer">
+          <div class="rating">⭐⭐⭐⭐ <span style="color:#888;font-weight:400">4.7 / 5</span></div>
+          <button class="learn-btn">Explore →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ░░░ CULTURAL SITES ░░░ -->
+<div class="section" style="background:var(--green-light); border-radius:24px; margin: 0 1.5rem 2rem;">
+  <div class="section-header">
+    <div class="section-icon">🏛️</div>
+    <div>
+      <h2>Cultural Sites</h2>
+      <p>Ancient history, rich traditions, and timeless heritage</p>
+    </div>
+  </div>
+  <div class="destinations-grid">
+
+    <div class="dest-card">
+      <div class="dest-img">
+        <img src="C:\Users\User\OneDrive\Desktop\index.html (destinations)\images\Lamu old town.jpg"/>
+        <span class="category-tag">Cultural Site</span>
+      </div>
+      <div class="dest-body">
+        <div>
+          <h3>Lamu Old Town</h3>
+          <div class="dest-location">📍 Lamu County, Kenya</div>
+          <p class="dest-desc">A UNESCO World Heritage Site and East Africa's oldest, best-preserved Swahili settlement. Lamu's labyrinthine coral-stone streets, ornate wooden doors, and dhow harbour tell 700 years of Swahili civilisation. No cars — just donkeys and the sea breeze.</p>
+          <div class="activities-label">Activities</div>
+          <div class="activities">
+            <span class="activity-tag">⛵ Dhow Sailing</span>
+            <span class="activity-tag">🚶 Heritage Walks</span>
+            <span class="activity-tag">🎨 Art Galleries</span>
+            <span class="activity-tag">🍛 Swahili Cuisine</span>
+            <span class="activity-tag">🕌 Fort Visit</span>
+          </div>
+        </div>
+        <div class="dest-footer">
+          <div class="rating">⭐⭐⭐⭐⭐ <span style="color:#888;font-weight:400">4.9 / 5</span></div>
+          <button class="learn-btn">Explore →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <div class="dest-img">
+        <img src="C:\Users\User\OneDrive\Desktop\index.html (destinations)\images\Fort Jesus.jpg" alt="Fort Jesus"/>
+        <span class="category-tag">Cultural Site</span>
+      </div>
+      <div class="dest-body">
+        <div>
+          <h3>Fort Jesus, Mombasa</h3>
+          <div class="dest-location">📍 Mombasa County, Kenya</div>
+          <p class="dest-desc">Built by the Portuguese in 1593 and now a UNESCO World Heritage Site, Fort Jesus dominates the old harbour of Mombasa. This coral-stone fortress witnessed centuries of epic battles between Portuguese, Omanis, and the British, and its museum holds extraordinary Swahili artefacts.</p>
+          <div class="activities-label">Activities</div>
+          <div class="activities">
+            <span class="activity-tag">🏰 Guided Tours</span>
+            <span class="activity-tag">🏛️ Museum</span>
+            <span class="activity-tag">📖 History Walks</span>
+            <span class="activity-tag">🌊 Harbour Views</span>
+          </div>
+        </div>
+        <div class="dest-footer">
+          <div class="rating">⭐⭐⭐⭐ <span style="color:#888;font-weight:400">4.7 / 5</span></div>
+          <button class="learn-btn">Explore →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ░░░ STATS BAND ░░░ -->
+<div class="stats-band">
+  <div class="stat-item"><strong>50+</strong><span>Destinations</span></div>
+  <div class="stat-item"><strong>120K</strong><span>Happy Travellers</span></div>
+  <div class="stat-item"><strong>4.9★</strong><span>Average Rating</span></div>
+  <div class="stat-item"><strong>12</strong><span>Countries Covered</span></div>
+</div>
+
+<!-- ░░░ FOOTER ░░░ -->
+<footer>
+  &copy; 2026 <strong>ExploreWorld</strong> — Destinations Page by Leslie &nbsp;|&nbsp; Group 3 Tourism Website Project
+</footer>
+
+<script>
+  // Filter tab interactivity
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
